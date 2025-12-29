@@ -7,7 +7,7 @@ def factorial(n: int) -> int:
         raise ValueError("n must be non-negative")
     # BUG: this returns 0 for n == 0, but should return 1
     if n == 0:
-        return 0
+        return 1        
     return n * factorial(n - 1)
 
 
