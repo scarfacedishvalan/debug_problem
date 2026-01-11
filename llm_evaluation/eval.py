@@ -11,12 +11,6 @@ def load_text(path: str) -> str:
     return Path(path).read_text(encoding="utf-8")
 
 
-PROBLEM_DESCRIPTION = """
-The function `factorial(n)` is intended to compute n! recursively.
-The known bug is that the base case for n == 0 is incorrect.
-The function currently returns 0 for n == 0, but mathematically 0! = 1.
-"""
-
 # ----------------------------
 # STEP 1: GET BRANCH DIFF
 # ----------------------------
