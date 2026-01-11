@@ -3,7 +3,7 @@ from pathlib import Path
 import shutil
 
 def run_tests_and_capture(branch: str, reference_branch, repo_path) -> Path:
-    output_file = Path(f"test_results_{branch}.txt")
+    output_file = Path(f"test_results/test_results_{branch}.txt")
 
     # Clear .pytest_cache
     pytest_cache = Path(repo_path) / ".pytest_cache"
@@ -18,7 +18,7 @@ def run_tests_and_capture(branch: str, reference_branch, repo_path) -> Path:
 
     with output_file.open("w", encoding="utf-8") as f:
         subprocess.run(
-            ["pytest"],
+            ["python -m pytest tests"],
             stdout=f,
             cwd=repo_path,
             stderr=subprocess.STDOUT,
@@ -53,5 +53,5 @@ if __name__ == "__main__":
     REPO_PATH = "C:\\Python\\debug_problem"
     BASE_REF = "rate_limiter_submission"
     FEATURE_REF = "rate_limiter_sol4.py"
-    artifact = run_tests_and_capture(FEATURE_REF, BASE_REF, REPO_PATH)
+    artifact = run_tests_and_capture(BASE_REF, BASE_REF, REPO_PATH)
     print("Saved to:", artifact)
