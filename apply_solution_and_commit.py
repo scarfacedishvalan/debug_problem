@@ -30,17 +30,14 @@ def delete_branch(branch_name, reference_branch='main'):
 if __name__ == "__main__":
     # Example usage:
     # Replace with actual paths if needed
-    branches = [
-        'rate_limiter_sol1.py',
-        'rate_limiter_sol2.py',
-        'rate_limiter_sol3.py',
-        'rate_limiter_sol4.py'
-    ]
+
+    solution_files = ["sol1.py", "sol2.py", "sol3.py", "sol4.py"]
+    branch_names = [f"rate_limiter_sol{solution_file.split('.')[0]}" for solution_file in solution_files]
+    target_file = "rate_limiter.py"
+    reference_branch = 'rate_limiter_submission'
 
     # for branch in branches:
     #     delete_branch(branch, reference_branch='rate_limiter_submission')
 
-    for solution_file in ['sol1.py', 'sol2.py', 'sol3.py', 'sol4.py']:
-        target_file = 'rate_limiter.py'
-        branch_name = f'rate_limiter_{os.path.splitext(solution_file)[0]}.py'
-        apply_solution_and_commit(solution_file, target_file, branch_name, reference_branch='rate_limiter_submission')
+    for solution_file, branch_name in zip(solution_files, branch_names):
+        apply_solution_and_commit(solution_file, target_file, branch_name, reference_branch=reference_branch)
