@@ -1,0 +1,83 @@
+============================= test session starts =============================
+platform win32 -- Python 3.9.7, pytest-6.2.4, py-1.10.0, pluggy-0.13.1
+rootdir: C:\Python\debug_problem, configfile: pytest.ini, testpaths: tests
+plugins: anyio-3.6.2, dash-2.11.1
+collected 5 items
+
+tests\test_rate_limiter.py F.FFF                                         [100%]
+
+================================== FAILURES ===================================
+___________________________ test_allows_up_to_limit ___________________________
+
+limiter = <src.rate_limiter.RateLimiter object at 0x000001611B440670>
+
+    def test_allows_up_to_limit(limiter):
+        user = 'alice'
+        assert limiter.allow_request(user)
+        assert limiter.allow_request(user)
+        assert limiter.allow_request(user)
+>       assert not limiter.allow_request(user)
+E       AssertionError: assert not True
+E        +  where True = <bound method RateLimiter.allow_request of <src.rate_limiter.RateLimiter object at 0x000001611B440670>>('alice')
+E        +    where <bound method RateLimiter.allow_request of <src.rate_limiter.RateLimiter object at 0x000001611B440670>> = <src.rate_limiter.RateLimiter object at 0x000001611B440670>.allow_request
+
+tests\test_rate_limiter.py:15: AssertionError
+_____________________________ test_window_resets ______________________________
+
+limiter = <src.rate_limiter.RateLimiter object at 0x000001611B4E5D60>
+
+    def test_window_resets(limiter):
+        user = 'alice'
+        for _ in range(3):
+            assert limiter.allow_request(user)
+>       assert not limiter.allow_request(user)
+E       AssertionError: assert not True
+E        +  where True = <bound method RateLimiter.allow_request of <src.rate_limiter.RateLimiter object at 0x000001611B4E5D60>>('alice')
+E        +    where <bound method RateLimiter.allow_request of <src.rate_limiter.RateLimiter object at 0x000001611B4E5D60>> = <src.rate_limiter.RateLimiter object at 0x000001611B4E5D60>.allow_request
+
+tests\test_rate_limiter.py:27: AssertionError
+________________________ test_old_requests_are_cleaned ________________________
+
+limiter = <src.rate_limiter.RateLimiter object at 0x000001611B50CD60>
+
+    def test_old_requests_are_cleaned(limiter):
+        user = 'alice'
+        assert limiter.allow_request(user)
+        time.sleep(1)
+        assert limiter.allow_request(user)
+        time.sleep(1.1)
+        # The first request should now be out of window
+        assert limiter.allow_request(user)
+        assert limiter.allow_request(user)  # Should still allow up to limit
+>       assert not limiter.allow_request(user)
+E       AssertionError: assert not True
+E        +  where True = <bound method RateLimiter.allow_request of <src.rate_limiter.RateLimiter object at 0x000001611B50CD60>>('alice')
+E        +    where <bound method RateLimiter.allow_request of <src.rate_limiter.RateLimiter object at 0x000001611B50CD60>> = <src.rate_limiter.RateLimiter object at 0x000001611B50CD60>.allow_request
+
+tests\test_rate_limiter.py:40: AssertionError
+_____________________ test_no_timestamps_added_on_reject ______________________
+
+limiter = <src.rate_limiter.RateLimiter object at 0x000001611B440D60>
+
+    def test_no_timestamps_added_on_reject(limiter):
+        user = 'alice'
+        for _ in range(3):
+            assert limiter.allow_request(user)
+>       assert not limiter.allow_request(user)
+E       AssertionError: assert not True
+E        +  where True = <bound method RateLimiter.allow_request of <src.rate_limiter.RateLimiter object at 0x000001611B440D60>>('alice')
+E        +    where <bound method RateLimiter.allow_request of <src.rate_limiter.RateLimiter object at 0x000001611B440D60>> = <src.rate_limiter.RateLimiter object at 0x000001611B440D60>.allow_request
+
+tests\test_rate_limiter.py:46: AssertionError
+============================== warnings summary ===============================
+..\..\Users\abhir\anaconda3\lib\site-packages\pyreadline\py3k_compat.py:8
+  C:\Users\abhir\anaconda3\lib\site-packages\pyreadline\py3k_compat.py:8: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+    return isinstance(x, collections.Callable)
+
+-- Docs: https://docs.pytest.org/en/stable/warnings.html
+=========================== short test summary info ===========================
+FAILED tests/test_rate_limiter.py::test_allows_up_to_limit - AssertionError: ...
+FAILED tests/test_rate_limiter.py::test_window_resets - AssertionError: asser...
+FAILED tests/test_rate_limiter.py::test_old_requests_are_cleaned - AssertionE...
+FAILED tests/test_rate_limiter.py::test_no_timestamps_added_on_reject - Asser...
+=================== 4 failed, 1 passed, 1 warning in 2.46s ====================
