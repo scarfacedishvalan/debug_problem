@@ -1,15 +1,20 @@
 ============================= test session starts =============================
-platform win32 -- Python 3.9.7, pytest-6.2.4, py-1.10.0, pluggy-0.13.1
+platform win32 -- Python 3.9.7, pytest-6.2.4, py-1.10.0, pluggy-0.13.1 -- C:\Users\abhir\anaconda3\python.exe
+cachedir: .pytest_cache
 rootdir: C:\Python\debug_problem, configfile: pytest.ini, testpaths: tests
 plugins: anyio-3.6.2, dash-2.11.1
-collected 5 items
+collecting ... collected 5 items
 
-tests\test_rate_limiter.py F.FFF                                         [100%]
+tests/test_rate_limiter.py::test_allows_up_to_limit FAILED               [ 20%]
+tests/test_rate_limiter.py::test_separate_users PASSED                   [ 40%]
+tests/test_rate_limiter.py::test_window_resets FAILED                    [ 60%]
+tests/test_rate_limiter.py::test_old_requests_are_cleaned FAILED         [ 80%]
+tests/test_rate_limiter.py::test_no_timestamps_added_on_reject FAILED    [100%]
 
 ================================== FAILURES ===================================
 ___________________________ test_allows_up_to_limit ___________________________
 
-limiter = <src.rate_limiter.RateLimiter object at 0x000001611B440670>
+limiter = <src.rate_limiter.RateLimiter object at 0x00000203D6B51640>
 
     def test_allows_up_to_limit(limiter):
         user = 'alice'
@@ -18,13 +23,16 @@ limiter = <src.rate_limiter.RateLimiter object at 0x000001611B440670>
         assert limiter.allow_request(user)
 >       assert not limiter.allow_request(user)
 E       AssertionError: assert not True
-E        +  where True = <bound method RateLimiter.allow_request of <src.rate_limiter.RateLimiter object at 0x000001611B440670>>('alice')
-E        +    where <bound method RateLimiter.allow_request of <src.rate_limiter.RateLimiter object at 0x000001611B440670>> = <src.rate_limiter.RateLimiter object at 0x000001611B440670>.allow_request
+E        +  where True = <bound method RateLimiter.allow_request of <src.rate_limiter.RateLimiter object at 0x00000203D6B51640>>('alice')
+E        +    where <bound method RateLimiter.allow_request of <src.rate_limiter.RateLimiter object at 0x00000203D6B51640>> = <src.rate_limiter.RateLimiter object at 0x00000203D6B51640>.allow_request
+
+limiter    = <src.rate_limiter.RateLimiter object at 0x00000203D6B51640>
+user       = 'alice'
 
 tests\test_rate_limiter.py:15: AssertionError
 _____________________________ test_window_resets ______________________________
 
-limiter = <src.rate_limiter.RateLimiter object at 0x000001611B4E5D60>
+limiter = <src.rate_limiter.RateLimiter object at 0x00000203D6BF7D60>
 
     def test_window_resets(limiter):
         user = 'alice'
@@ -32,13 +40,17 @@ limiter = <src.rate_limiter.RateLimiter object at 0x000001611B4E5D60>
             assert limiter.allow_request(user)
 >       assert not limiter.allow_request(user)
 E       AssertionError: assert not True
-E        +  where True = <bound method RateLimiter.allow_request of <src.rate_limiter.RateLimiter object at 0x000001611B4E5D60>>('alice')
-E        +    where <bound method RateLimiter.allow_request of <src.rate_limiter.RateLimiter object at 0x000001611B4E5D60>> = <src.rate_limiter.RateLimiter object at 0x000001611B4E5D60>.allow_request
+E        +  where True = <bound method RateLimiter.allow_request of <src.rate_limiter.RateLimiter object at 0x00000203D6BF7D60>>('alice')
+E        +    where <bound method RateLimiter.allow_request of <src.rate_limiter.RateLimiter object at 0x00000203D6BF7D60>> = <src.rate_limiter.RateLimiter object at 0x00000203D6BF7D60>.allow_request
+
+_          = 2
+limiter    = <src.rate_limiter.RateLimiter object at 0x00000203D6BF7D60>
+user       = 'alice'
 
 tests\test_rate_limiter.py:27: AssertionError
 ________________________ test_old_requests_are_cleaned ________________________
 
-limiter = <src.rate_limiter.RateLimiter object at 0x000001611B50CD60>
+limiter = <src.rate_limiter.RateLimiter object at 0x00000203D6C1CB50>
 
     def test_old_requests_are_cleaned(limiter):
         user = 'alice'
@@ -51,13 +63,16 @@ limiter = <src.rate_limiter.RateLimiter object at 0x000001611B50CD60>
         assert limiter.allow_request(user)  # Should still allow up to limit
 >       assert not limiter.allow_request(user)
 E       AssertionError: assert not True
-E        +  where True = <bound method RateLimiter.allow_request of <src.rate_limiter.RateLimiter object at 0x000001611B50CD60>>('alice')
-E        +    where <bound method RateLimiter.allow_request of <src.rate_limiter.RateLimiter object at 0x000001611B50CD60>> = <src.rate_limiter.RateLimiter object at 0x000001611B50CD60>.allow_request
+E        +  where True = <bound method RateLimiter.allow_request of <src.rate_limiter.RateLimiter object at 0x00000203D6C1CB50>>('alice')
+E        +    where <bound method RateLimiter.allow_request of <src.rate_limiter.RateLimiter object at 0x00000203D6C1CB50>> = <src.rate_limiter.RateLimiter object at 0x00000203D6C1CB50>.allow_request
+
+limiter    = <src.rate_limiter.RateLimiter object at 0x00000203D6C1CB50>
+user       = 'alice'
 
 tests\test_rate_limiter.py:40: AssertionError
 _____________________ test_no_timestamps_added_on_reject ______________________
 
-limiter = <src.rate_limiter.RateLimiter object at 0x000001611B440D60>
+limiter = <src.rate_limiter.RateLimiter object at 0x00000203D6B51070>
 
     def test_no_timestamps_added_on_reject(limiter):
         user = 'alice'
@@ -65,16 +80,14 @@ limiter = <src.rate_limiter.RateLimiter object at 0x000001611B440D60>
             assert limiter.allow_request(user)
 >       assert not limiter.allow_request(user)
 E       AssertionError: assert not True
-E        +  where True = <bound method RateLimiter.allow_request of <src.rate_limiter.RateLimiter object at 0x000001611B440D60>>('alice')
-E        +    where <bound method RateLimiter.allow_request of <src.rate_limiter.RateLimiter object at 0x000001611B440D60>> = <src.rate_limiter.RateLimiter object at 0x000001611B440D60>.allow_request
+E        +  where True = <bound method RateLimiter.allow_request of <src.rate_limiter.RateLimiter object at 0x00000203D6B51070>>('alice')
+E        +    where <bound method RateLimiter.allow_request of <src.rate_limiter.RateLimiter object at 0x00000203D6B51070>> = <src.rate_limiter.RateLimiter object at 0x00000203D6B51070>.allow_request
+
+_          = 2
+limiter    = <src.rate_limiter.RateLimiter object at 0x00000203D6B51070>
+user       = 'alice'
 
 tests\test_rate_limiter.py:46: AssertionError
-============================== warnings summary ===============================
-..\..\Users\abhir\anaconda3\lib\site-packages\pyreadline\py3k_compat.py:8
-  C:\Users\abhir\anaconda3\lib\site-packages\pyreadline\py3k_compat.py:8: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
-    return isinstance(x, collections.Callable)
-
--- Docs: https://docs.pytest.org/en/stable/warnings.html
 =========================== short test summary info ===========================
 FAILED tests/test_rate_limiter.py::test_allows_up_to_limit - AssertionError: ...
 FAILED tests/test_rate_limiter.py::test_window_resets - AssertionError: asser...
