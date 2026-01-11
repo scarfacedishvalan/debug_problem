@@ -4,33 +4,31 @@ from collections import defaultdict
 
 class RateLimiter:
     """
-    Simple in-memory rate limiter.
-
-    Allows up to `limit` requests per `window_seconds` per user.
+    Fixed-window rate limiter using counters.
+    Allows up to `limit` requests per window per user.
+    NOTE: This is approximate and may allow bursts at window boundaries.
     """
 
     def __init__(self, limit: int, window_seconds: int):
         self.limit = limit
         self.window = window_seconds
-        self.requests = defaultdict(list)
+        # user_id -> (window_id, count)
+        self.counters = defaultdict(lambda: (0, 0))
 
     def allow_request(self, user_id: str) -> bool:
-        """
-        Returns True if the request is allowed, False otherwise.
-        """
-
         now = time.time()
+        window_id = int(now // self.window)
 
-        # BUG 1: old requests are never cleaned up correctly
-        for ts in self.requests[user_id]:
-            if now - ts > self.window:
-                self.requests[user_id].remove(ts)
+        last_window_id, count = self.counters[user_id]
 
-        # BUG 2: off-by-one error in limit check
-        if len(self.requests[user_id]) > self.limit:
+        if window_id != last_window_id:
+            # New window → reset counter
+            self.counters[user_id] = (window_id, 1)
+            return True
+
+        # Same window
+        if count >= self.limit:
             return False
 
-        # BUG 3: timestamp added even when request is rejected
-        self.requests[user_id].append(now)
-
+        self.counters[user_id] = (window_id, count + 1)
         return True
