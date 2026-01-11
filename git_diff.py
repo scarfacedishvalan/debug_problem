@@ -32,11 +32,25 @@ def git_branch_diff(
     return diff
 
 
+def print_all_branches(repo_path):
+    print("Local branches:")
+    subprocess.run(["git", "branch"], cwd=repo_path)
+    print("\nRemote branches:")
+    subprocess.run(["git", "branch", "-r"], cwd=repo_path)
+
 if __name__ == "__main__":
     # Example usage
+    branches = [
+        'rate_limiter_sol1',
+        'rate_limiter_sol2',
+        'rate_limiter_sol3',
+        'rate_limiter_sol4'
+    ]
     repo_path = "C:\\Python\\debug_problem"
-    base_branch = "origin/main"
-    feature_branch = "origin/candidate_2025-12-29"
+    base_branch = "rate_limiter_submission"
+    feature_branch = "rate_limiter_sol1.py"
+
+    # print_all_branches(repo_path)
 
     git_branch_diff(
         repo_path=repo_path,

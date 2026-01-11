@@ -1,0 +1,19 @@
+{
+  "type": "object",
+  "required": [
+    "fixes_root_cause",
+    "change_scope",
+    "introduces_unrelated_changes",
+    "subjective_assessment"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "fixes_root_cause": { "type": "boolean" },
+    "change_scope": {
+      "type": "string",
+      "enum": ["minimal", "moderate", "excessive"]
+    },
+    "introduces_unrelated_changes": { "type": "boolean" },
+    "subjective_assessment": { "type": "string" }
+  }
+}

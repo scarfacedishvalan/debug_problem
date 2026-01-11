@@ -1,0 +1,22 @@
+{
+  "title": "Fix rate limiter correctness bugs",
+  "root_causes": [
+    {
+      "id": "mutation_during_iteration",
+      "description": "Removing items from a list while iterating causes skipped elements."
+    },
+    {
+      "id": "off_by_one_limit",
+      "description": "Limit check allows one extra request."
+    },
+    {
+      "id": "state_corruption_on_reject",
+      "description": "Rejected requests still mutate internal state."
+    }
+  ],
+  "required_properties": [
+    "Expired timestamps must be cleaned safely.",
+    "Requests must be rejected when count reaches limit.",
+    "Rejected requests must not mutate state."
+  ]
+}

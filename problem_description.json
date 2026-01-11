@@ -1,0 +1,36 @@
+{
+  "title": "In-Memory Rate Limiter",
+  "description": "Implement a simple in-memory rate limiter that restricts the number of requests a user can make within a specified time window.",
+  "requirements": [
+    "Each user is allowed up to `limit` requests per `window_seconds`.",
+    "Requests are tracked in memory, per user.",
+    "If a user exceeds the allowed number of requests in the time window, further requests should be rejected until the window resets."
+  ],
+  "provided_code": {
+    "filename": "rate_limiter.py",
+    "class": "RateLimiter",
+    "methods": [
+      {
+        "name": "__init__",
+        "description": "Initializes the rate limiter with a request limit and a time window."
+      },
+      {
+        "name": "allow_request",
+        "description": "Returns True if the request is allowed, False otherwise."
+      }
+    ]
+  },
+  "example_usage": [
+    "rl = RateLimiter(limit=3, window_seconds=10)",
+    "print(rl.allow_request('alice'))  # True",
+    "print(rl.allow_request('alice'))  # True",
+    "print(rl.allow_request('alice'))  # True",
+    "print(rl.allow_request('alice'))  # False (limit reached)"
+  ],
+  "bugs": [
+    "Old requests are not cleaned up correctly: The code attempts to remove old timestamps from the user's request list, but does so incorrectly.",
+    "Off-by-one error in limit check: The code checks if the number of requests is greater than the limit, which may allow one extra request.",
+    "Timestamp added even when request is rejected: The code appends the current timestamp to the user's request list even if the request is not allowed."
+  ],
+  "task": "Identify and fix the bugs in the provided RateLimiter implementation so that it correctly enforces the rate limit per user. Ensure that old requests outside the time window are properly removed, the limit check is accurate, and timestamps are only added for allowed requests."
+}

@@ -1,15 +1,15 @@
 import subprocess
 import json
 from openai import OpenAI
+from pathlib import Path
 
 # ----------------------------
 # CONFIG
 # ----------------------------
 
-REPO_PATH = "C:\\Python\\debug_problem"
-BASE_REF = "origin/main"
-FEATURE_REF = "origin/candidate_2025-12-29"
-MODEL = "gpt-4.1-mini"
+def load_text(path: str) -> str:
+    return Path(path).read_text(encoding="utf-8")
+
 
 PROBLEM_DESCRIPTION = """
 The function `factorial(n)` is intended to compute n! recursively.
@@ -40,23 +40,16 @@ def get_branch_diff(repo_path, base_ref, feature_ref):
 # STEP 2: BUILD PROMPT
 # ----------------------------
 
-def build_prompt(problem_description, diff_text):
-    return f"""
-Problem description:
-{problem_description.strip()}
+SYSTEM_PROMPT = load_text("prompt_templates/system/evaluator_system.txt")
+USER_TEMPLATE = load_text("prompt_templates/user/diff_evaluator_prompt.txt")
 
-Here is the code change (unified diff):
+def build_user_prompt(problem_json: str, diff_text: str) -> str:
+    return (
+        USER_TEMPLATE
+        .replace("{{PROBLEM_JSON}}", problem_json)
+        .replace("{{DIFF_TEXT}}", diff_text)
+    )
 
-{diff_text}
-
-Evaluate the change and answer ONLY in JSON using this schema:
-
-{{
-  "fixes_root_cause": boolean,
-  "change_scope": "minimal" | "moderate" | "excessive",
-  "introduces_unrelated_changes": boolean
-}}
-"""
 
 
 # ----------------------------
@@ -71,12 +64,7 @@ def evaluate_with_llm(prompt):
         input=[
             {
                 "role": "system",
-                "content": (
-                    "You are an automated code evaluation assistant. "
-                    "Evaluate whether a proposed code change correctly fixes the stated bug. "
-                    "Do not speculate about tests or runtime behavior. "
-                    "Respond ONLY with valid JSON."
-                ),
+                "content": SYSTEM_PROMPT
             },
             {
                 "role": "user",
@@ -85,8 +73,15 @@ def evaluate_with_llm(prompt):
         ],
         # response_format={"type": "json_object"},
     )
-    evaluation = json.loads(response.output_text)
+    
+    raw_text = response.output_text.strip()
 
+    try:
+        evaluation = json.loads(raw_text)
+    except json.JSONDecodeError as e:
+        raise ValueError(
+            f"Model returned invalid JSON:\n{raw_text}"
+        ) from e
 
     return evaluation
 
@@ -101,7 +96,10 @@ def main():
     if not diff_text.strip():
         raise RuntimeError("Diff is empty — nothing to evaluate.")
 
-    prompt = build_prompt(PROBLEM_DESCRIPTION, diff_text)
+    with open("problem_description.json") as f:
+        problem_description_json = json.load(f)
+
+    prompt = build_user_prompt(problem_description_json, diff_text)
 
     evaluation = evaluate_with_llm(prompt)
 
@@ -110,4 +108,8 @@ def main():
 
 
 if __name__ == "__main__":
+    REPO_PATH = "C:\\Python\\debug_problem"
+    BASE_REF = "rate_limiter_submission"
+    FEATURE_REF = "rate_limiter_sol4.py"
+    MODEL = "gpt-4.1-mini"
     main()

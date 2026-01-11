@@ -1,0 +1,48 @@
+You are given:
+
+1) A structured problem description defining expected behavior and known root causes.
+2) A unified git diff representing the candidate's submission.
+
+------------------------
+Problem description (JSON):
+
+{{PROBLEM_JSON}}
+
+------------------------
+Code change (unified diff):
+
+{{DIFF_TEXT}}
+
+------------------------
+Evaluation criteria:
+
+A. fixes_root_cause = true ONLY IF:
+   - Every root cause listed in the problem description is fully fixed.
+   - No fix is partial, incomplete, or masking the issue.
+   - No new correctness issue is introduced by the change.
+
+B. change_scope:
+   - "minimal"   → Only lines strictly necessary to fix the root causes are changed.
+   - "moderate"  → Some refactoring or cleanup beyond the fix, but still reasonable.
+   - "excessive" → Large refactors, unrelated changes, or unnecessary redesign.
+
+C. introduces_unrelated_changes = true IF:
+   - Any change does not directly contribute to fixing the stated root causes.
+   - Formatting-only or cosmetic changes count as unrelated unless explicitly required.
+
+D. subjective_assessment:
+   Brief summary covering:
+   - Correctness and completeness
+   - Code clarity and maintainability
+   - Efficiency implications
+   - Risks or edge cases
+
+------------------------
+Output schema (STRICT):
+
+{
+  "fixes_root_cause": boolean,
+  "change_scope": "minimal" | "moderate" | "excessive",
+  "introduces_unrelated_changes": boolean,
+  "subjective_assessment": string
+}
