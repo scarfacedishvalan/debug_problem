@@ -1,36 +1,30 @@
 import time
-from collections import defaultdict
+from collections import defaultdict, deque
 
 
 class RateLimiter:
     """
-    Simple in-memory rate limiter.
-
+    Sliding-window rate limiter using deque for efficient cleanup.
     Allows up to `limit` requests per `window_seconds` per user.
     """
 
     def __init__(self, limit: int, window_seconds: int):
         self.limit = limit
         self.window = window_seconds
-        self.requests = defaultdict(list)
+        self.requests = defaultdict(deque)
 
     def allow_request(self, user_id: str) -> bool:
-        """
-        Returns True if the request is allowed, False otherwise.
-        """
-
         now = time.time()
+        q = self.requests[user_id]
 
-        # BUG 1: old requests are never cleaned up correctly
-        for ts in self.requests[user_id]:
-            if now - ts > self.window:
-                self.requests[user_id].remove(ts)
+        # Remove expired timestamps from the front
+        while q and now - q[0] > self.window:
+            q.popleft()
 
-        # BUG 2: off-by-one error in limit check
-        if len(self.requests[user_id]) > self.limit:
+        # Enforce limit
+        if len(q) >= self.limit:
             return False
 
-        # BUG 3: timestamp added even when request is rejected
-        self.requests[user_id].append(now)
-
+        # Record allowed request
+        q.append(now)
         return True
