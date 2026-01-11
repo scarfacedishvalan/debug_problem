@@ -37,6 +37,9 @@ if __name__ == "__main__":
         'rate_limiter_sol4.py'
     ]
 
+    # for branch in branches:
+    #     delete_branch(branch, reference_branch='rate_limiter_submission')
+
     for solution_file in ['sol1.py', 'sol2.py', 'sol3.py', 'sol4.py']:
         target_file = 'rate_limiter.py'
         branch_name = f'rate_limiter_{os.path.splitext(solution_file)[0]}.py'
