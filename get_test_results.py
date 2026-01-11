@@ -31,6 +31,12 @@ def run_tests_and_capture(branch: str, reference_branch, repo_path) -> Path:
         cwd=repo_path,
         check=True,
     )
+    subprocess.run(
+        ["git", "commit", "-m", f"Add test results for {branch}"],
+        cwd=repo_path,
+        check=True,
+    )
+  
 
     # Checkout back to reference branch
     subprocess.run(
