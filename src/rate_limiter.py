@@ -4,33 +4,35 @@ from collections import defaultdict
 
 class RateLimiter:
     """
-    Simple in-memory rate limiter.
-
-    Allows up to `limit` requests per `window_seconds` per user.
+    Token bucket rate limiter.
+    Tokens refill continuously over time.
+    Each request consumes one token.
     """
 
     def __init__(self, limit: int, window_seconds: int):
-        self.limit = limit
-        self.window = window_seconds
-        self.requests = defaultdict(list)
+        # Capacity = max burst size
+        self.capacity = limit
+
+        # Tokens added per second
+        self.refill_rate = limit / window_seconds
+
+        # user_id -> (tokens, last_refill_timestamp)
+        self.buckets = defaultdict(lambda: (self.capacity, time.time()))
 
     def allow_request(self, user_id: str) -> bool:
-        """
-        Returns True if the request is allowed, False otherwise.
-        """
-
         now = time.time()
+        tokens, last_ts = self.buckets[user_id]
 
-        # BUG 1: old requests are never cleaned up correctly
-        for ts in self.requests[user_id]:
-            if now - ts > self.window:
-                self.requests[user_id].remove(ts)
+        # Refill tokens based on elapsed time
+        elapsed = now - last_ts
+        tokens = min(self.capacity, tokens + elapsed * self.refill_rate)
 
-        # BUG 2: off-by-one error in limit check
-        if len(self.requests[user_id]) > self.limit:
+        if tokens < 1.0:
+            # Not enough tokens → reject
+            self.buckets[user_id] = (tokens, now)
             return False
 
-        # BUG 3: timestamp added even when request is rejected
-        self.requests[user_id].append(now)
-
+        # Consume one token
+        tokens -= 1.0
+        self.buckets[user_id] = (tokens, now)
         return True
