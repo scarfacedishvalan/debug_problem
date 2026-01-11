@@ -14,7 +14,7 @@ tests/test_rate_limiter.py::test_no_timestamps_added_on_reject FAILED    [100%]
 ================================== FAILURES ===================================
 ___________________________ test_allows_up_to_limit ___________________________
 
-limiter = <src.rate_limiter.RateLimiter object at 0x00000203D6B51640>
+limiter = <src.rate_limiter.RateLimiter object at 0x000001BE18B61610>
 
     def test_allows_up_to_limit(limiter):
         user = 'alice'
@@ -23,16 +23,16 @@ limiter = <src.rate_limiter.RateLimiter object at 0x00000203D6B51640>
         assert limiter.allow_request(user)
 >       assert not limiter.allow_request(user)
 E       AssertionError: assert not True
-E        +  where True = <bound method RateLimiter.allow_request of <src.rate_limiter.RateLimiter object at 0x00000203D6B51640>>('alice')
-E        +    where <bound method RateLimiter.allow_request of <src.rate_limiter.RateLimiter object at 0x00000203D6B51640>> = <src.rate_limiter.RateLimiter object at 0x00000203D6B51640>.allow_request
+E        +  where True = <bound method RateLimiter.allow_request of <src.rate_limiter.RateLimiter object at 0x000001BE18B61610>>('alice')
+E        +    where <bound method RateLimiter.allow_request of <src.rate_limiter.RateLimiter object at 0x000001BE18B61610>> = <src.rate_limiter.RateLimiter object at 0x000001BE18B61610>.allow_request
 
-limiter    = <src.rate_limiter.RateLimiter object at 0x00000203D6B51640>
+limiter    = <src.rate_limiter.RateLimiter object at 0x000001BE18B61610>
 user       = 'alice'
 
 tests\test_rate_limiter.py:15: AssertionError
 _____________________________ test_window_resets ______________________________
 
-limiter = <src.rate_limiter.RateLimiter object at 0x00000203D6BF7D60>
+limiter = <src.rate_limiter.RateLimiter object at 0x000001BE18C06D60>
 
     def test_window_resets(limiter):
         user = 'alice'
@@ -40,17 +40,17 @@ limiter = <src.rate_limiter.RateLimiter object at 0x00000203D6BF7D60>
             assert limiter.allow_request(user)
 >       assert not limiter.allow_request(user)
 E       AssertionError: assert not True
-E        +  where True = <bound method RateLimiter.allow_request of <src.rate_limiter.RateLimiter object at 0x00000203D6BF7D60>>('alice')
-E        +    where <bound method RateLimiter.allow_request of <src.rate_limiter.RateLimiter object at 0x00000203D6BF7D60>> = <src.rate_limiter.RateLimiter object at 0x00000203D6BF7D60>.allow_request
+E        +  where True = <bound method RateLimiter.allow_request of <src.rate_limiter.RateLimiter object at 0x000001BE18C06D60>>('alice')
+E        +    where <bound method RateLimiter.allow_request of <src.rate_limiter.RateLimiter object at 0x000001BE18C06D60>> = <src.rate_limiter.RateLimiter object at 0x000001BE18C06D60>.allow_request
 
 _          = 2
-limiter    = <src.rate_limiter.RateLimiter object at 0x00000203D6BF7D60>
+limiter    = <src.rate_limiter.RateLimiter object at 0x000001BE18C06D60>
 user       = 'alice'
 
 tests\test_rate_limiter.py:27: AssertionError
 ________________________ test_old_requests_are_cleaned ________________________
 
-limiter = <src.rate_limiter.RateLimiter object at 0x00000203D6C1CB50>
+limiter = <src.rate_limiter.RateLimiter object at 0x000001BE18C2DB50>
 
     def test_old_requests_are_cleaned(limiter):
         user = 'alice'
@@ -63,16 +63,16 @@ limiter = <src.rate_limiter.RateLimiter object at 0x00000203D6C1CB50>
         assert limiter.allow_request(user)  # Should still allow up to limit
 >       assert not limiter.allow_request(user)
 E       AssertionError: assert not True
-E        +  where True = <bound method RateLimiter.allow_request of <src.rate_limiter.RateLimiter object at 0x00000203D6C1CB50>>('alice')
-E        +    where <bound method RateLimiter.allow_request of <src.rate_limiter.RateLimiter object at 0x00000203D6C1CB50>> = <src.rate_limiter.RateLimiter object at 0x00000203D6C1CB50>.allow_request
+E        +  where True = <bound method RateLimiter.allow_request of <src.rate_limiter.RateLimiter object at 0x000001BE18C2DB50>>('alice')
+E        +    where <bound method RateLimiter.allow_request of <src.rate_limiter.RateLimiter object at 0x000001BE18C2DB50>> = <src.rate_limiter.RateLimiter object at 0x000001BE18C2DB50>.allow_request
 
-limiter    = <src.rate_limiter.RateLimiter object at 0x00000203D6C1CB50>
+limiter    = <src.rate_limiter.RateLimiter object at 0x000001BE18C2DB50>
 user       = 'alice'
 
 tests\test_rate_limiter.py:40: AssertionError
 _____________________ test_no_timestamps_added_on_reject ______________________
 
-limiter = <src.rate_limiter.RateLimiter object at 0x00000203D6B51070>
+limiter = <src.rate_limiter.RateLimiter object at 0x000001BE18B61040>
 
     def test_no_timestamps_added_on_reject(limiter):
         user = 'alice'
@@ -80,11 +80,11 @@ limiter = <src.rate_limiter.RateLimiter object at 0x00000203D6B51070>
             assert limiter.allow_request(user)
 >       assert not limiter.allow_request(user)
 E       AssertionError: assert not True
-E        +  where True = <bound method RateLimiter.allow_request of <src.rate_limiter.RateLimiter object at 0x00000203D6B51070>>('alice')
-E        +    where <bound method RateLimiter.allow_request of <src.rate_limiter.RateLimiter object at 0x00000203D6B51070>> = <src.rate_limiter.RateLimiter object at 0x00000203D6B51070>.allow_request
+E        +  where True = <bound method RateLimiter.allow_request of <src.rate_limiter.RateLimiter object at 0x000001BE18B61040>>('alice')
+E        +    where <bound method RateLimiter.allow_request of <src.rate_limiter.RateLimiter object at 0x000001BE18B61040>> = <src.rate_limiter.RateLimiter object at 0x000001BE18B61040>.allow_request
 
 _          = 2
-limiter    = <src.rate_limiter.RateLimiter object at 0x00000203D6B51070>
+limiter    = <src.rate_limiter.RateLimiter object at 0x000001BE18B61040>
 user       = 'alice'
 
 tests\test_rate_limiter.py:46: AssertionError
@@ -93,4 +93,4 @@ FAILED tests/test_rate_limiter.py::test_allows_up_to_limit - AssertionError: ...
 FAILED tests/test_rate_limiter.py::test_window_resets - AssertionError: asser...
 FAILED tests/test_rate_limiter.py::test_old_requests_are_cleaned - AssertionE...
 FAILED tests/test_rate_limiter.py::test_no_timestamps_added_on_reject - Asser...
-=================== 4 failed, 1 passed, 1 warning in 2.46s ====================
+=================== 4 failed, 1 passed, 1 warning in 2.48s ====================
