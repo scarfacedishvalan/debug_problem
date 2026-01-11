@@ -1,6 +1,6 @@
 import time
 import pytest
-from rate_limiter import RateLimiter
+from src.rate_limiter import RateLimiter
 
 @pytest.fixture
 def limiter():

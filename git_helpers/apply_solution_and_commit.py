@@ -36,8 +36,8 @@ if __name__ == "__main__":
     target_file = "rate_limiter.py"
     reference_branch = 'rate_limiter_submission'
 
-    # for branch in branch_names:
-    #     delete_branch(branch, reference_branch='rate_limiter_submission')
+    for branch in branch_names:
+        delete_branch(branch, reference_branch='rate_limiter_submission')
 
-    for solution_file, branch_name in zip(solution_files, branch_names):
-        apply_solution_and_commit(solution_file, target_file, branch_name, reference_branch=reference_branch)
+    # for solution_file, branch_name in zip(solution_files, branch_names):
+    #     apply_solution_and_commit(solution_file, target_file, branch_name, reference_branch=reference_branch)
