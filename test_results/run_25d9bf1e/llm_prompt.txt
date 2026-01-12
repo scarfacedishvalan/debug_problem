@@ -1,0 +1,183 @@
+Input Format:
+- TEST_OUTPUT_TEXT: Raw pytest verbose output with assertion errors and tracebacks
+- RUNNER: Test framework name (e.g., "pytest")
+- TIMESTAMP: ISO-8601 string of test execution time
+
+Input:
+{
+  "test_output_text": ============================= test session starts =============================
+platform win32 -- Python 3.9.7, pytest-6.2.4, py-1.10.0, pluggy-0.13.1 -- C:\Users\abhir\anaconda3\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Python\debug_problem, configfile: pytest.ini, testpaths: tests
+plugins: anyio-3.6.2, dash-2.11.1
+collecting ... collected 5 items
+
+tests/test_rate_limiter.py::test_allows_up_to_limit FAILED               [ 20%]
+tests/test_rate_limiter.py::test_separate_users PASSED                   [ 40%]
+tests/test_rate_limiter.py::test_window_resets FAILED                    [ 60%]
+tests/test_rate_limiter.py::test_old_requests_are_cleaned FAILED         [ 80%]
+tests/test_rate_limiter.py::test_no_timestamps_added_on_reject FAILED    [100%]
+
+================================== FAILURES ===================================
+___________________________ test_allows_up_to_limit ___________________________
+
+limiter = <src.rate_limiter.RateLimiter object at 0x00000160BBCC2610>
+
+    def test_allows_up_to_limit(limiter):
+        user = 'alice'
+        assert limiter.allow_request(user)
+        assert limiter.allow_request(user)
+        assert limiter.allow_request(user)
+>       assert not limiter.allow_request(user)
+E       AssertionError: assert not True
+E        +  where True = <bound method RateLimiter.allow_request of <src.rate_limiter.RateLimiter object at 0x00000160BBCC2610>>('alice')
+E        +    where <bound method RateLimiter.allow_request of <src.rate_limiter.RateLimiter object at 0x00000160BBCC2610>> = <src.rate_limiter.RateLimiter object at 0x00000160BBCC2610>.allow_request
+
+limiter    = <src.rate_limiter.RateLimiter object at 0x00000160BBCC2610>
+user       = 'alice'
+
+tests\test_rate_limiter.py:15: AssertionError
+_____________________________ test_window_resets ______________________________
+
+limiter = <src.rate_limiter.RateLimiter object at 0x00000160BBD66D60>
+
+    def test_window_resets(limiter):
+        user = 'alice'
+        for _ in range(3):
+            assert limiter.allow_request(user)
+>       assert not limiter.allow_request(user)
+E       AssertionError: assert not True
+E        +  where True = <bound method RateLimiter.allow_request of <src.rate_limiter.RateLimiter object at 0x00000160BBD66D60>>('alice')
+E        +    where <bound method RateLimiter.allow_request of <src.rate_limiter.RateLimiter object at 0x00000160BBD66D60>> = <src.rate_limiter.RateLimiter object at 0x00000160BBD66D60>.allow_request
+
+_          = 2
+limiter    = <src.rate_limiter.RateLimiter object at 0x00000160BBD66D60>
+user       = 'alice'
+
+tests\test_rate_limiter.py:27: AssertionError
+________________________ test_old_requests_are_cleaned ________________________
+
+limiter = <src.rate_limiter.RateLimiter object at 0x00000160BBD8EB50>
+
+    def test_old_requests_are_cleaned(limiter):
+        user = 'alice'
+        assert limiter.allow_request(user)
+        time.sleep(1)
+        assert limiter.allow_request(user)
+        time.sleep(1.1)
+        # The first request should now be out of window
+        assert limiter.allow_request(user)
+        assert limiter.allow_request(user)  # Should still allow up to limit
+>       assert not limiter.allow_request(user)
+E       AssertionError: assert not True
+E        +  where True = <bound method RateLimiter.allow_request of <src.rate_limiter.RateLimiter object at 0x00000160BBD8EB50>>('alice')
+E        +    where <bound method RateLimiter.allow_request of <src.rate_limiter.RateLimiter object at 0x00000160BBD8EB50>> = <src.rate_limiter.RateLimiter object at 0x00000160BBD8EB50>.allow_request
+
+limiter    = <src.rate_limiter.RateLimiter object at 0x00000160BBD8EB50>
+user       = 'alice'
+
+tests\test_rate_limiter.py:40: AssertionError
+_____________________ test_no_timestamps_added_on_reject ______________________
+
+limiter = <src.rate_limiter.RateLimiter object at 0x00000160BBCC2040>
+
+    def test_no_timestamps_added_on_reject(limiter):
+        user = 'alice'
+        for _ in range(3):
+            assert limiter.allow_request(user)
+>       assert not limiter.allow_request(user)
+E       AssertionError: assert not True
+E        +  where True = <bound method RateLimiter.allow_request of <src.rate_limiter.RateLimiter object at 0x00000160BBCC2040>>('alice')
+E        +    where <bound method RateLimiter.allow_request of <src.rate_limiter.RateLimiter object at 0x00000160BBCC2040>> = <src.rate_limiter.RateLimiter object at 0x00000160BBCC2040>.allow_request
+
+_          = 2
+limiter    = <src.rate_limiter.RateLimiter object at 0x00000160BBCC2040>
+user       = 'alice'
+
+tests\test_rate_limiter.py:46: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_rate_limiter.py::test_allows_up_to_limit - AssertionError: ...
+FAILED tests/test_rate_limiter.py::test_window_resets - AssertionError: asser...
+FAILED tests/test_rate_limiter.py::test_old_requests_are_cleaned - AssertionE...
+FAILED tests/test_rate_limiter.py::test_no_timestamps_added_on_reject - Asser...
+=================== 4 failed, 1 passed, 1 warning in 2.47s ====================
+,
+  "runner": "pytest",
+  "timestamp": "2026-01-12T11:46:42.500909Z"
+}
+
+Task:
+Extract structured test signals according to this schema:
+
+{
+  "schema_version": "1.0",
+
+  "run_metadata": {
+    "runner": "pytest",
+    "timestamp": "ISO-8601 string",
+    "duration_seconds": 0.0,
+    "platform": "string | null",
+    "python_version": "string | null"
+  },
+
+  "summary": {
+    "total_tests": 0,
+    "passed": 0,
+    "failed": 0,
+    "skipped": 0
+  },
+
+  "failed_tests": [
+    {
+      "test_name": "string",
+      "suite": "string | null",
+      "file": "string | null",
+      "line": 0,
+
+      "error_type": "assertion | exception | timeout | crash | unknown",
+      "error_class": "string | null",
+      "message": "string",
+      "stack_trace_excerpt": "string | null",
+
+      "failure_signature": "string",
+      "raw_snippet": "string | null"
+    }
+  ],
+
+  "failure_clusters": [
+    {
+      "cluster_id": "string",
+      "signature": "string",
+      "tests": ["string"],
+
+      "error_type": "assertion | exception | timeout | crash | unknown",
+      "symptom_hint": "string | null",
+
+      "confidence": 0.0
+    }
+  ],
+
+  "behavioral_signals": {
+    "dominant_cluster_id": "string | null",
+    "consistency": "high | medium | low",
+
+    "suggests_no_fix": true,
+    "suggests_partial_fix": false,
+    "suggests_regression": false,
+    "flakiness_suspected": false
+  },
+
+  "parser_warnings": ["string"]
+}
+
+
+Rules:
+- Do not summarize beyond the schema.
+- Do not infer root cause.
+- Only extract what is observable in the text.
+- Cluster failures by identical assertion or error signature.
+- If test name cannot be extracted: populate parser_warnings, set test_name to null
+- If stack trace is incomplete: include available lines in stack_trace_excerpt
+
+Output:
+JSON only. No commentary.

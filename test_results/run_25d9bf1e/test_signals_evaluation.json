@@ -1,0 +1,90 @@
+{
+  "schema_version": "1.0",
+  "run_metadata": {
+    "runner": "pytest",
+    "timestamp": "2026-01-12T11:46:42.500909Z",
+    "duration_seconds": 2.47,
+    "platform": "win32",
+    "python_version": "3.9.7"
+  },
+  "summary": {
+    "total_tests": 5,
+    "passed": 1,
+    "failed": 4,
+    "skipped": 0
+  },
+  "failed_tests": [
+    {
+      "test_name": "test_allows_up_to_limit",
+      "suite": null,
+      "file": "tests/test_rate_limiter.py",
+      "line": 15,
+      "error_type": "assertion",
+      "error_class": "AssertionError",
+      "message": "AssertionError: assert not True",
+      "stack_trace_excerpt": "E       AssertionError: assert not True\nE        +  where True = <bound method RateLimiter.allow_request of <src.rate_limiter.RateLimiter object at 0x00000160BBCC2610>>('alice')\nE        +    where <bound method RateLimiter.allow_request of <src.rate_limiter.RateLimiter object at 0x00000160BBCC2610>> = <src.rate_limiter.RateLimiter object at 0x00000160BBCC2610>.allow_request",
+      "failure_signature": "AssertionError: assert not True",
+      "raw_snippet": "    def test_allows_up_to_limit(limiter):\n        user = 'alice'\n        assert limiter.allow_request(user)\n        assert limiter.allow_request(user)\n        assert limiter.allow_request(user)\n>       assert not limiter.allow_request(user)"
+    },
+    {
+      "test_name": "test_window_resets",
+      "suite": null,
+      "file": "tests/test_rate_limiter.py",
+      "line": 27,
+      "error_type": "assertion",
+      "error_class": "AssertionError",
+      "message": "AssertionError: assert not True",
+      "stack_trace_excerpt": "E       AssertionError: assert not True\nE        +  where True = <bound method RateLimiter.allow_request of <src.rate_limiter.RateLimiter object at 0x00000160BBD66D60>>('alice')\nE        +    where <bound method RateLimiter.allow_request of <src.rate_limiter.RateLimiter object at 0x00000160BBD66D60>> = <src.rate_limiter.RateLimiter object at 0x00000160BBD66D60>.allow_request",
+      "failure_signature": "AssertionError: assert not True",
+      "raw_snippet": "    def test_window_resets(limiter):\n        user = 'alice'\n        for _ in range(3):\n            assert limiter.allow_request(user)\n>       assert not limiter.allow_request(user)"
+    },
+    {
+      "test_name": "test_old_requests_are_cleaned",
+      "suite": null,
+      "file": "tests/test_rate_limiter.py",
+      "line": 40,
+      "error_type": "assertion",
+      "error_class": "AssertionError",
+      "message": "AssertionError: assert not True",
+      "stack_trace_excerpt": "E       AssertionError: assert not True\nE        +  where True = <bound method RateLimiter.allow_request of <src.rate_limiter.RateLimiter object at 0x00000160BBD8EB50>>('alice')\nE        +    where <bound method RateLimiter.allow_request of <src.rate_limiter.RateLimiter object at 0x00000160BBD8EB50>> = <src.rate_limiter.RateLimiter object at 0x00000160BBD8EB50>.allow_request",
+      "failure_signature": "AssertionError: assert not True",
+      "raw_snippet": "    def test_old_requests_are_cleaned(limiter):\n        user = 'alice'\n        assert limiter.allow_request(user)\n        time.sleep(1)\n        assert limiter.allow_request(user)\n        time.sleep(1.1)\n        # The first request should now be out of window\n        assert limiter.allow_request(user)\n        assert limiter.allow_request(user)  # Should still allow up to limit\n>       assert not limiter.allow_request(user)"
+    },
+    {
+      "test_name": "test_no_timestamps_added_on_reject",
+      "suite": null,
+      "file": "tests/test_rate_limiter.py",
+      "line": 46,
+      "error_type": "assertion",
+      "error_class": "AssertionError",
+      "message": "AssertionError: assert not True",
+      "stack_trace_excerpt": "E       AssertionError: assert not True\nE        +  where True = <bound method RateLimiter.allow_request of <src.rate_limiter.RateLimiter object at 0x00000160BBCC2040>>('alice')\nE        +    where <bound method RateLimiter.allow_request of <src.rate_limiter.RateLimiter object at 0x00000160BBCC2040>> = <src.rate_limiter.RateLimiter object at 0x00000160BBCC2040>.allow_request",
+      "failure_signature": "AssertionError: assert not True",
+      "raw_snippet": "    def test_no_timestamps_added_on_reject(limiter):\n        user = 'alice'\n        for _ in range(3):\n            assert limiter.allow_request(user)\n>       assert not limiter.allow_request(user)"
+    }
+  ],
+  "failure_clusters": [
+    {
+      "cluster_id": "AssertionError: assert not True",
+      "signature": "AssertionError: assert not True",
+      "tests": [
+        "test_allows_up_to_limit",
+        "test_window_resets",
+        "test_old_requests_are_cleaned",
+        "test_no_timestamps_added_on_reject"
+      ],
+      "error_type": "assertion",
+      "symptom_hint": null,
+      "confidence": 1.0
+    }
+  ],
+  "behavioral_signals": {
+    "dominant_cluster_id": "AssertionError: assert not True",
+    "consistency": "high",
+    "suggests_no_fix": true,
+    "suggests_partial_fix": false,
+    "suggests_regression": false,
+    "flakiness_suspected": false
+  },
+  "parser_warnings": []
+}

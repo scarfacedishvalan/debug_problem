@@ -1,0 +1,27 @@
+Input Format:
+- TEST_OUTPUT_TEXT: Raw pytest verbose output with assertion errors and tracebacks
+- RUNNER: Test framework name (e.g., "pytest")
+- TIMESTAMP: ISO-8601 string of test execution time
+
+Input:
+{
+  "test_output_text": {{TEST_OUTPUT_TEXT}},
+  "runner": "{{RUNNER}}",
+  "timestamp": "{{TIMESTAMP}}"
+}
+
+Task:
+Extract structured test signals according to this schema:
+
+{{TEST_SIGNALS_SCHEMA}}
+
+Rules:
+- Do not summarize beyond the schema.
+- Do not infer root cause.
+- Only extract what is observable in the text.
+- Cluster failures by identical assertion or error signature.
+- If test name cannot be extracted: populate parser_warnings, set test_name to null
+- If stack trace is incomplete: include available lines in stack_trace_excerpt
+
+Output:
+JSON only. No commentary.
