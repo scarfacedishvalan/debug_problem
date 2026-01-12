@@ -103,5 +103,5 @@ if __name__ == "__main__":
     BASE_REF = "rate_limiter_submission"
     FEATURE_REF = "rate_limiter_sol1"
 
-    artifact = run_tests_and_capture(BASE_REF, BASE_REF, REPO_PATH, output_dir=r"C:\Python\testing_data")
+    artifact = run_tests_and_capture(FEATURE_REF, BASE_REF, REPO_PATH, output_dir=r"C:\Python\testing_data")
     print("Saved test output to:", artifact)
