@@ -101,5 +101,7 @@ if __name__ == "__main__":
     BASE_REF = "rate_limiter_submission"
     FEATURE_REF = "rate_limiter_sol4.py"
     MODEL = "gpt-4.1-mini"
-    test_results_dir = r"C:\Python\debug_problem\test_results\run_25d9bf1e"
+    all_dirs = os.listdir(os.path.join(REPO_PATH, "test_results"))
+    all_dirs = [d for d in all_dirs if os.path.isdir(os.path.join(REPO_PATH, "test_results", d))]
+    test_results_dir = os.path.join(REPO_PATH, "test_results", all_dirs[-1])  # Use the latest test results directory
     main(test_results_dir)
