@@ -3,6 +3,16 @@ import shutil
 import subprocess
 
 def apply_solution_and_commit(solution_file, target_file, branch_name, reference_branch='main'):
+
+    # Stash any uncommitted changes
+    subprocess.run(['git', 'stash'], check=True)
+    # Git operations
+    subprocess.run(['git', 'checkout', reference_branch], check=True)
+    try:
+        subprocess.run(['git', 'checkout', '-b', branch_name], check=True)
+    except subprocess.CalledProcessError:
+        subprocess.run(['git', 'checkout', branch_name], check=True)
+
     # Read solution file contents
     with open(solution_file, 'r', encoding='utf-8') as src:
         solution_code = src.read()
@@ -10,14 +20,13 @@ def apply_solution_and_commit(solution_file, target_file, branch_name, reference
     # Replace target file contents
     with open(target_file, 'w', encoding='utf-8') as dst:
         dst.write(solution_code)
-
-    # Git operations
-    subprocess.run(['git', 'checkout', reference_branch], check=True)
-    subprocess.run(['git', 'checkout', '-b', branch_name], check=True)
     subprocess.run(['git', 'add', target_file], check=True)
     subprocess.run(['git', 'commit', '-m', f'Apply solution from {solution_file}'], check=True)
     subprocess.run(['git', 'push', '-u', 'origin', branch_name], check=True)  # Added push
     subprocess.run(['git', 'checkout', reference_branch], check=True)
+
+    # Unstash changes
+    subprocess.run(['git', 'stash', 'pop'], check=True)
 
 
 def delete_branch(branch_name, reference_branch='main'):
