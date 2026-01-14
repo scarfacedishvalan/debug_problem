@@ -33,6 +33,13 @@ def run_tests_and_capture(branch: str, reference_branch: str, repo_path: str, ou
     if os.path.exists(pytest_cache) and os.path.isdir(pytest_cache):
         shutil.rmtree(pytest_cache)
 
+    # Stash latest
+    subprocess.run(
+        ["git", "stash"],
+        cwd=repo_path,
+        check=True,
+    )
+
     # ---- checkout candidate branch (read-only intent) ----
     subprocess.run(
         ["git", "checkout", "--quiet", branch],
@@ -94,6 +101,13 @@ def run_tests_and_capture(branch: str, reference_branch: str, repo_path: str, ou
         check=True,
     )
 
+    # Stash latest
+    subprocess.run(
+        ["git", "stash", "apply"],
+        cwd=repo_path,
+        check=True,
+    )
+
     return output_file
 
 
@@ -101,7 +115,7 @@ def run_tests_and_capture(branch: str, reference_branch: str, repo_path: str, ou
 if __name__ == "__main__":
     REPO_PATH = "C:\\Python\\debug_problem"
     BASE_REF = "rate_limiter_submission"
-    FEATURE_REF = "rate_limiter_sol1"
+    FEATURE_REF = "rate_limiter_sol2"
 
-    artifact = run_tests_and_capture(FEATURE_REF, BASE_REF, REPO_PATH, output_dir=r"C:\Python\testing_data")
+    artifact = run_tests_and_capture(FEATURE_REF, BASE_REF, REPO_PATH, output_dir=r"C:\Python\testing_data\sol2")
     print("Saved test output to:", artifact)

@@ -46,15 +46,5 @@
     }
   ],
 
-  "behavioral_signals": {
-    "dominant_cluster_id": "string | null",
-    "consistency": "high | medium | low",
-
-    "suggests_no_fix": true,
-    "suggests_partial_fix": false,
-    "suggests_regression": false,
-    "flakiness_suspected": false
-  },
-
   "parser_warnings": ["string"]
 }

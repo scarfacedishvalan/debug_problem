@@ -32,13 +32,14 @@ if __name__ == "__main__":
     # Replace with actual paths if needed
 
     solution_files = ["sol1.py", "sol2.py", "sol3.py", "sol4.py"]
+    solution_files = ["sol5.py"]
     branch_names = [f"rate_limiter_{solution_file.split('.')[0]}" for solution_file in solution_files]
     target_file = "src/rate_limiter.py"
     reference_branch = 'rate_limiter_submission'
 
-    for branch in branch_names:
-        delete_branch(branch, reference_branch='rate_limiter_submission')
+    # for branch in branch_names:
+    #     delete_branch(branch, reference_branch='rate_limiter_submission')
 
-    # for solution_file, branch_name in zip(solution_files, branch_names):
-    #     full_solution_file = os.path.join("solutions", solution_file)
-    #     apply_solution_and_commit(full_solution_file, target_file, branch_name, reference_branch=reference_branch)
+    for solution_file, branch_name in zip(solution_files, branch_names):
+        full_solution_file = os.path.join("solutions", solution_file)
+        apply_solution_and_commit(full_solution_file, target_file, branch_name, reference_branch=reference_branch)
