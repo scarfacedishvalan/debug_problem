@@ -16,7 +16,7 @@ def git_branch_diff(
 
     try:
         diff = subprocess.check_output(
-            ["git", "diff", f"{base_branch}...{feature_branch}"],
+            ["git", "diff", f"{base_branch}...{feature_branch}", "--", "src/rate_limiter.py"],
             cwd=repo_path,
             text=True,
             stderr=subprocess.STDOUT,
@@ -48,13 +48,15 @@ if __name__ == "__main__":
     ]
     repo_path = "C:\\Python\\debug_problem"
     base_branch = "rate_limiter_submission"
-    feature_branch = "rate_limiter_sol1.py"
+    feature_branch = "rate_limiter_sol2"
 
     # print_all_branches(repo_path)
+
+    filepath = r"C:\Python\testing_data\sol2\rate_limiter_sol2\run_762eb055\git_diff.txt"
 
     git_branch_diff(
         repo_path=repo_path,
         base_branch=base_branch,
         feature_branch=feature_branch,
-        output_file="diff.txt",
+        output_file=filepath,
     )

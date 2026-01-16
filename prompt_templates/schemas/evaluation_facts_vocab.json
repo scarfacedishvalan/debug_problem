@@ -1,0 +1,33 @@
+{
+  "version": "1.0",
+  "reason_codes": [
+    "addresses_dominant_failure_cluster",
+    "addresses_multiple_failure_clusters",
+    "no_alignment_with_observed_failures",
+
+    "core_logic_modified",
+    "state_representation_modified",
+    "initialization_path_modified",
+    "error_handling_path_modified",
+
+    "addresses_boundary_condition",
+    "addresses_state_cleanup",
+    "addresses_control_flow_guard",
+    "addresses_invariant_violation",
+    "addresses_resource_lifecycle",
+
+    "tests_pass_after_relevant_change",
+    "tests_still_failing_after_relevant_change",
+    "tests_pass_without_relevant_change",
+
+    "insufficient_signal_for_confident_alignment",
+    "evaluation_affected_by_flakiness"
+  ],
+
+  "confidence_drivers": [
+  "all_tests_passed",
+  "high_test_consistency",
+  "localized_core_logic_change",
+  "multiple_relevant_change_patterns"
+]
+}

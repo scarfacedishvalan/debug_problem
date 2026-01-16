@@ -1,0 +1,32 @@
+Input Format:
+- GIT_DIFF_TEXT: Unified git diff text
+- DIFF_FACTS: Deterministic diff facts extracted earlier
+- VOCABULARY: Closed vocabulary of allowed labels
+
+Input:
+{
+  "git_diff_text": {{GIT_DIFF_TEXT}},
+  "diff_facts": {{DIFF_FACTS}},
+  "vocabulary": {{VOCABULARY}}
+}
+
+Task:
+Extract structured diff signals according to this schema:
+
+{{DIFF_SIGNALS_SCHEMA}}
+
+Rules:
+- Do NOT evaluate correctness.
+- Do NOT reference test results or expected behavior.
+- Do NOT infer whether a bug is fixed.
+- Do NOT guess developer intent.
+- Only describe observable semantic change patterns present in the diff.
+- Use ONLY the allowed vocabulary defined in the schema.
+- Locations must reference classes or functions present in DIFF_FACTS where possible.
+- Confidence values must be between 0.0 and 1.0.
+- If no items apply for a section, return an empty array.
+- Do not invent risks or patterns not supported by the diff text.
+- If the diff is ambiguous, include fewer signals rather than speculative ones.
+
+Output:
+JSON only. No commentary.

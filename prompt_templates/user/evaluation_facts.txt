@@ -1,0 +1,60 @@
+Input Format:
+- TEST_SIGNALS: Structured test outcome signals
+- DIFF_FACTS: Deterministic diff statistics
+- DIFF_SIGNALS: Structured semantic diff signals
+- VOCABULARY: Closed vocabulary of allowed reason codes, confidence drivers, and risk codes
+
+Input:
+{
+  "test_signals": {{TEST_SIGNALS}},
+  "diff_facts": {{DIFF_FACTS}},
+  "diff_signals": {{DIFF_SIGNALS}},
+  "vocabulary": {{VOCABULARY}}
+}
+
+Task:
+Extract observable evaluation evidence according to this schema:
+
+{{EVALUATION_FACTS_SCHEMA}}
+
+IMPORTANT:
+You are extracting EVIDENCE ONLY.
+You are NOT making final decisions, classifications, or confidence judgments.
+
+Your responsibility is limited to identifying what is directly observable in the input.
+
+---
+
+Global rules:
+- Use ONLY the information provided in the input
+- Use ONLY reason codes, confidence drivers, and risk codes present in the provided vocabulary
+- Do NOT invent new codes or labels
+- Do NOT infer developer intent
+- Do NOT speculate beyond observable evidence
+- Do NOT assume the existence of prior failures unless explicitly present in TEST_SIGNALS
+
+Evidence extraction rules:
+- Populate reason_codes ONLY when directly supported by DIFF_SIGNALS or TEST_SIGNALS
+- Presence of passing tests MAY be reported as evidence via reason_codes or confidence_drivers
+- Do NOT determine whether a change is a “fix”
+- Do NOT determine whether a change is correct or complete
+- Do NOT resolve or reconcile conflicting signals
+
+Confidence driver rules:
+- confidence_drivers describe observable factors that strengthen or weaken confidence
+- confidence_drivers MUST NOT be numeric
+- confidence_drivers MUST NOT imply correctness or completeness
+
+Scope rules:
+- Populate scope_assessment fields strictly from DIFF_FACTS
+- Do NOT evaluate whether the scope is appropriate
+- Do NOT infer intent from scope size
+
+Risk rules:
+- Include risk_codes ONLY when directly supported by DIFF_SIGNALS
+- If no risks are observable, return an empty risk_codes array
+
+Output constraints:
+- Output MUST be valid JSON
+- Output MUST conform exactly to the provided schema
+- Output MUST NOT include commentary, explanations, or derived judgments

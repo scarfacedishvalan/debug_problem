@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.1",
+
+  "test_outcome": {
+    "total_tests": "integer",
+    "passed": "integer",
+    "failed": "integer",
+    "skipped": "integer",
+
+    "all_tests_passed": "boolean",
+
+    "dominant_failure_cluster_id": "string | null",
+    "failure_cluster_count": "integer",
+
+    "consistency": "high | medium | low",
+    "flakiness_suspected": "boolean"
+  },
+
+  "evidence": {
+    "reason_codes": [
+      "string"
+    ],
+
+    "confidence_drivers": [
+      "string"
+    ],
+
+    "risk_codes": [
+      "string"
+    ]
+  },
+
+  "scope_assessment": {
+    "scope_size": "small | medium | large",
+
+    "files_changed": "integer",
+    "functions_touched": "integer",
+    "core_logic_touched": "boolean"
+  }
+}

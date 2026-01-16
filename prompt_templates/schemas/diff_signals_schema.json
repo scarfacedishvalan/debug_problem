@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0",
+
+  "change_patterns": [
+    {
+      "pattern": "string",
+      "location": "string",
+      "confidence": 0.0
+    }
+  ],
+
+  "state_changes": [
+    {
+      "type": "string",
+      "location": "string",
+      "confidence": 0.0
+    }
+  ],
+
+  "risk_flags": [
+    {
+      "risk": "string",
+      "severity": "low | medium | high"
+    }
+  ],
+  
+  "parser_warnings": []
+}

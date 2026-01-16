@@ -11,7 +11,11 @@ def apply_solution_and_commit(solution_file, target_file, branch_name, reference
     try:
         subprocess.run(['git', 'checkout', '-b', branch_name], check=True)
     except subprocess.CalledProcessError:
-        subprocess.run(['git', 'checkout', branch_name], check=True)
+        subprocess.run(['git', 'branch', '-D', branch_name])
+        # Delete remote branch
+        subprocess.run(['git', 'push', 'origin', '--delete', branch_name])
+
+        subprocess.run(['git', 'checkout', '-b', branch_name], check=True)
 
     # Read solution file contents
     with open(solution_file, 'r', encoding='utf-8') as src:
@@ -26,7 +30,7 @@ def apply_solution_and_commit(solution_file, target_file, branch_name, reference
     subprocess.run(['git', 'checkout', reference_branch], check=True)
 
     # Unstash changes
-    subprocess.run(['git', 'stash', 'pop'], check=True)
+    subprocess.run(['git', 'stash', 'apply'], check=True)
 
 
 def delete_branch(branch_name, reference_branch='main'):

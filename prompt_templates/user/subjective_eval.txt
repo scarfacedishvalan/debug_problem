@@ -1,0 +1,55 @@
+Input Context:
+
+1. Problem Context:
+{{PROBLEM_CONTEXT}}
+
+2. Final Deterministic Evaluation Facts:
+{{FINAL_EVALUATION_FACTS}}
+
+3. Supporting Evidence (Semantic Signals and Scope):
+{{EVALUATION_EVIDENCE}}
+
+Task:
+Write a thoughtful, high-quality subjective assessment of the candidate’s approach
+to solving this problem.
+
+You should treat the deterministic evaluation facts as authoritative and correct.
+Do NOT re-evaluate correctness, completeness, or risk.
+
+Your goal is to interpret HOW the candidate approached the problem in the context
+of what the problem was intended to test.
+
+Use the problem context to answer questions such as:
+- Was the scope of the solution appropriate for this kind of problem?
+- Does the solution reflect understanding of the underlying concepts being tested?
+- Did the candidate show discipline in avoiding unnecessary redesign or overreach?
+- Are the changes clear, maintainable, and robust given the stated objectives?
+- Do the choices made suggest principled reasoning rather than trial-and-error fixes?
+
+Guidelines:
+- Focus on engineering judgment, not test outcomes
+- Ground your assessment in the provided facts and evidence only
+- Avoid speculation about missing features, alternative designs, or production scaling
+- Do not introduce new requirements or reinterpret the problem
+- Do not mention numeric confidence values, test counts, or internal scoring
+- Avoid generic praise; be specific about what was done well or could be improved
+
+Tone and style:
+- Write as an experienced engineer giving internal interview feedback
+- Be concise but insightful
+- Prefer concrete observations over vague statements
+- Balanced and professional, not overly positive or negative
+
+Output requirements:
+- Provide an overall assessment in 3–5 sentences
+- Optionally list up to 3 concrete strengths
+- Optionally list up to 3 concrete concerns
+- If no meaningful concerns are evident, return an empty concerns array
+- Do NOT repeat structured fields verbatim
+
+Output must conform exactly to the following schema:
+
+{{SUBJECTIVE_EVAL_SCHEMA}}
+
+Output:
+JSON only. No commentary.

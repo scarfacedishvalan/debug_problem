@@ -1,0 +1,18 @@
+{
+    "change_patterns": [
+        "data_structure_change",
+        "boundary_condition_fix",
+        "cleanup_algorithm_change",
+        "side_effect_guarding",
+        "control_flow_change"
+    ],
+    "state_changes": [
+        "state_representation_change",
+        "state_lifecycle_change"
+    ],
+    "risks": [
+        "algorithmic_rewrite",
+        "monotonic_time_assumption",
+        "state_mutation_risk"
+    ]
+}

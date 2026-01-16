@@ -115,7 +115,7 @@ def run_tests_and_capture(branch: str, reference_branch: str, repo_path: str, ou
 if __name__ == "__main__":
     REPO_PATH = "C:\\Python\\debug_problem"
     BASE_REF = "rate_limiter_submission"
-    FEATURE_REF = "rate_limiter_sol2"
+    FEATURE_REF = "rate_limiter_sol5"
 
-    artifact = run_tests_and_capture(FEATURE_REF, BASE_REF, REPO_PATH, output_dir=r"C:\Python\testing_data\sol2")
+    artifact = run_tests_and_capture(FEATURE_REF, BASE_REF, REPO_PATH, output_dir=r"C:\Python\testing_data\sol5")
     print("Saved test output to:", artifact)

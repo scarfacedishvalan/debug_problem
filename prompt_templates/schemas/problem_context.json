@@ -1,0 +1,53 @@
+{
+  "problem_type": "debugging",
+  "system_context": "in-memory rate limiting utility",
+  "component_role": "request admission control at application boundary",
+  "intended_difficulty": "intermediate",
+  "expected_scope": "localized fix",
+
+  "what_is_being_tested": [
+    "Ability to reason about stateful logic over time",
+    "Handling of boundary conditions and off-by-one errors",
+    "Understanding of sliding window semantics",
+    "Discipline in modifying existing code without unnecessary redesign",
+    "Awareness of subtle side effects in mutable state"
+  ],
+
+  "primary_objective": "Correct logical bugs in the existing rate limiter implementation while preserving its external behavior and intent",
+
+  "secondary_objectives": [
+    "Ensure expired state is handled correctly",
+    "Avoid introducing new side effects or regressions",
+    "Keep the solution simple, readable, and maintainable"
+  ],
+
+  "non_objectives": [
+    "Designing a production-grade distributed rate limiter",
+    "Introducing concurrency controls or persistence",
+    "Rewriting the component from scratch",
+    "Optimizing for extreme scale"
+  ],
+
+  "ideal_solution_characteristics": [
+    "Correctly enforces the request limit without off-by-one errors",
+    "Cleans up expired requests in a predictable and efficient manner",
+    "Does not mutate state when a request is rejected",
+    "Keeps changes localized to the relevant logic",
+    "Improves clarity of intent where reasonable"
+  ],
+
+  "acceptable_variations": [
+    "Different internal data structures with equivalent semantics",
+    "Alternative cleanup strategies that preserve correctness",
+    "Minor refactoring that improves clarity without expanding scope"
+  ],
+
+  "evaluation_emphasis": [
+    "Correctness of logic over cleverness",
+    "Scope discipline and restraint",
+    "Clear reasoning about time-based state",
+    "Robust handling of edge cases"
+  ],
+
+  "risk_tolerance": "low"
+}
